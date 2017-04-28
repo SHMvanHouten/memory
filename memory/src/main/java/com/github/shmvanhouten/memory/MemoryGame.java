@@ -6,26 +6,26 @@ import java.util.TreeMap;
 
 public class MemoryGame {
     private Map<Integer, Position> positions = new TreeMap<>();
+    private ShuffleMachine shuffleMachine;
 
-    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shuffleMachine){
+    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shufMachine){
+        shuffleMachine = shufMachine;
         fillPositions(amountOfCards, imageLocations);
     }
 
-    private void fillPositions(int amountOfCards, Map<Integer, String> imageLocations){
-        for (int i = 0; i < amountOfCards; i++) {
-            makePositionWithCard(imageLocations, i);
+    private void fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations){
+        for (int i = 0; i < amountOfCardFaces; i++) {
+            makePositionWithCard(imageLocations, i, amountOfCardFaces);
         }
     }
 
-    private void makePositionWithCard(Map<Integer, String> imageLocations, int i) {
+    private void makePositionWithCard(Map<Integer, String> imageLocations, int i, int amountOfCardFaces) {
         Position position = new Position();
         position.assignCard(imageLocations.get(i));
-        positions.put(assignPosition(), position);
+        positions.put(i, position);
+        positions.put(i+amountOfCardFaces, position);
     }
 
-    private Integer assignPosition() {
-        return null;
-    }
 
     public boolean isPositionOccupied(int i) {
         return positions.get(i).isOccupied();

@@ -14,24 +14,26 @@ public class MemoryGameTest {
 
     @Test
     public void itShouldTellIfAPositionIsOccupied() throws Exception {
-        Map<Integer, String> listOfCards = createListOfCards();
-        MemoryGame game = new MemoryGame(16, listOfCards);
+        MemoryGame game = makeMemoryGame();
         assertThat(game.isPositionOccupied(0), is(true));
     }
 
     @Test
     public void itShouldSayIfTheCardInThePositionIsTurned() throws Exception {
-        Map<Integer, String> listOfCards = createListOfCards();
-        ShuffleMachine shuffleMachine = new ShuffleMachine();
-        MemoryGame game = new MemoryGame(16, listOfCards, shuffleMachine);
+        MemoryGame game = makeMemoryGame();
         assertThat(game.getPosition(0).getCard().isTurned, is(false));
         game.getPosition(0).getCard().turn();
         assertThat(game.getPosition(0).getCard().isTurned, is(true));
         assertThat(game.getPosition(1).getCard().isTurned, is(false));
     }
 
+
     @Test
-    public void name() throws Exception {
+    public void itShouldMakeTwoOfEachCards() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        MemoryCard cardAtZero = game.getPosition(0).getCard();
+        assertThat(cardAtZero.equals(game.getPosition(16).getCard()), is(true));
+        assertThat(cardAtZero.equals(game.getPosition(1).getCard()), is(false));
     }
 
     private Map<Integer, String> createListOfCards() {
@@ -40,5 +42,11 @@ public class MemoryGameTest {
             listOfCards.put(i, (i + 1) + ".jpg");
         }
         return listOfCards;
+    }
+
+    private MemoryGame makeMemoryGame() {
+        Map<Integer, String> listOfCards = createListOfCards();
+        ShuffleMachine shuffleMachine = new ShuffleMachine();
+        return new MemoryGame(16, listOfCards, shuffleMachine);
     }
 }
