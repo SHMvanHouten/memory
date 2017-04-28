@@ -18,4 +18,8 @@ public class Position {
     public MemoryCard getCard() {
         return card;
     }
+
+    public void setUnoccupied() {
+        occupied = false;
+    }
 }

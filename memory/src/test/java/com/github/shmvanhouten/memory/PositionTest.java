@@ -17,8 +17,16 @@ public class PositionTest {
     public void itShouldTellIfTheCardOnThePositionIsTurned() throws Exception {
         Position position = new Position();
         position.assignCard("1.jpg");
-        assertThat(position.getCard().isTurned, is(false));
+        assertThat(position.getCard().isTurned(), is(false));
         position.getCard().turn();
-        assertThat(position.getCard().isTurned, is(true));
+        assertThat(position.getCard().isTurned(), is(true));
+    }
+
+    @Test
+    public void itShouldMarkThePositionAsUnoccupied() throws Exception {
+        Position position = new Position();
+        position.assignCard("1.jpg");
+        position.setUnoccupied();
+        assertThat(position.isOccupied(), is(false));
     }
 }
