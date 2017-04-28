@@ -21,10 +21,10 @@ public class MemoryGameTest {
     @Test
     public void itShouldSayIfTheCardInThePositionIsTurned() throws Exception {
         MemoryGame game = makeMemoryGame();
-        assertThat(game.getPosition(0).getCard().isTurned, is(false));
+        assertThat(game.getPosition(0).getCard().isTurned(), is(false));
         game.getPosition(0).getCard().turn();
-        assertThat(game.getPosition(0).getCard().isTurned, is(true));
-        assertThat(game.getPosition(1).getCard().isTurned, is(false));
+        assertThat(game.getPosition(0).getCard().isTurned(), is(true));
+        assertThat(game.getPosition(1).getCard().isTurned(), is(false));
     }
 
 
@@ -32,9 +32,35 @@ public class MemoryGameTest {
     public void itShouldMakeTwoOfEachCards() throws Exception {
         MemoryGame game = makeMemoryGame();
         MemoryCard cardAtZero = game.getPosition(0).getCard();
-        assertThat(cardAtZero.equals(game.getPosition(16).getCard()), is(true));
-        assertThat(cardAtZero.equals(game.getPosition(1).getCard()), is(false));
+        MemoryCard cardAt16 = game.getPosition(16).getCard();
+
+        assertThat(cardAtZero.equals(cardAt16), is(true));
+
+        MemoryCard cardAt1 = game.getPosition(1).getCard();
+
+        assertThat(cardAtZero.equals(cardAt1), is(false));
     }
+
+    @Test
+    public void itShouldCompareTwoSelectedPositions() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        game.selectPosition(0);
+        game.selectPosition(1);
+
+        assertThat(game.isPositionOccupied(0), is(true));
+
+        game.selectPosition(0);
+        game.selectPosition(16);
+        assertThat(game.isPositionOccupied(0), is(false));
+    }
+
+
+
+
+
+
+
+
 
     private Map<Integer, String> createListOfCards() {
         Map<Integer, String> listOfCards = new HashMap<>();
