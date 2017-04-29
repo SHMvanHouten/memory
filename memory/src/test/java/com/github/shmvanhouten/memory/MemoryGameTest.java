@@ -101,6 +101,24 @@ public class MemoryGameTest {
 
     }
 
+    @Test
+    public void itShouldSwitchBackToPlayer1() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        String currentPlayer = game.getCurrentPlayer().getName();
+
+        assertThat(currentPlayer, is("Sjoerd"));
+
+        game.selectPosition(1);
+        game.selectPosition(2);
+        currentPlayer = game.getCurrentPlayer().getName();
+        assertThat(currentPlayer, is("Pietje"));
+
+        game.selectPosition(1);
+        game.selectPosition(2);
+        currentPlayer = game.getCurrentPlayer().getName();
+        assertThat(currentPlayer, is("Sjoerd"));
+    }
+
     private Map<Integer, String> createListOfCards() {
         Map<Integer, String> listOfCards = new HashMap<>();
         for (int i = 0; i < 16; i++) {

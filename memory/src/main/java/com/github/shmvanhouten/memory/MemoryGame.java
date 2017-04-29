@@ -1,8 +1,10 @@
 package com.github.shmvanhouten.memory;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class MemoryGame {
     private Map<Integer, Position> positions;
@@ -22,6 +24,32 @@ public class MemoryGame {
         positions = fillPositions(amountOfCards, imageLocations);
     }
 
+    public static void main(String[] args) {
+        Map<Integer, String> listOfCards = createListOfCards();
+        List<Player> players = new ArrayList<>();
+        Player player1 = new Player("Sjoerd");
+        Player player2 = new Player("Pietje");
+        players.add(player1);
+        players.add(player2);
+        ShuffleMachine shuffleMachine = new ShuffleMachine();
+        MemoryGame game = new MemoryGame(16, listOfCards, shuffleMachine, players);
+//        MemoryGame game =new MemoryGame(16, listOfCards, players);
+        game.startInputStream(game);
+    }
+
+    private void startInputStream(MemoryGame game) {
+        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+
+        try(BufferedReader reader = new BufferedReader(inputStreamReader)) {
+            String inputLine = reader.readLine();
+            while(inputLine != null){
+                game.selectPosition(Integer.parseInt(inputLine));
+                inputLine = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Map<Integer, Position> fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations){
         Map<Integer, Position> unShuffledPositions = new TreeMap<>();
@@ -80,18 +108,19 @@ public class MemoryGame {
     }
 
     private void handleSituationIfCardsAreDifferent(Position secondPickedPosition) {
-        System.out.println("Wrong! Opponents turn!");
 
         firstPickedPosition.getCard().turn();
         secondPickedPosition.getCard().turn();
 
         switchPlayerTurn();
 
+        System.out.println("Wrong! "+ getCurrentPlayer().getName() + "'s turn!");
+
         firstPick = true;
     }
 
     private void switchPlayerTurn() {
-        if(playerTurn == players.size()){
+        if(playerTurn == players.size() -1){
             playerTurn = 0;
         }else{
             playerTurn++;
@@ -111,5 +140,13 @@ public class MemoryGame {
 
     public Player getCurrentPlayer() {
         return players.get(playerTurn);
+    }
+
+    private static Map<Integer, String> createListOfCards() {
+        Map<Integer, String> listOfCards = new HashMap<>();
+        for (int i = 0; i < 16; i++) {
+            listOfCards.put(i, (i + 1) + ".jpg");
+        }
+        return listOfCards;
     }
 }
