@@ -1,6 +1,8 @@
 package com.github.shmvanhouten.memory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ShuffleMachine {
@@ -17,5 +19,12 @@ public class ShuffleMachine {
     }
 
 
+    public List<Player> shuffle(List<Player> playerList, boolean brokenShuffleMachine) {
+        List<Player> shuffledList = new ArrayList<>();
+        if(brokenShuffleMachine) {
+            shuffledList = playerList;
+        }
+        return shuffledList;
+    }
 }
 

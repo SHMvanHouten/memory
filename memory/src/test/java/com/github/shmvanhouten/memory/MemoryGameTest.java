@@ -87,12 +87,19 @@ public class MemoryGameTest {
         assertThat(game.getCurrentPlayer().getScore(), is(1));
     }
 
-    
+    @Test
+    public void itShouldShufflePlayers() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        String currentPlayer = game.getCurrentPlayer().getName();
 
+        assertThat(currentPlayer, is("Sjoerd"));
 
+        game.selectPosition(1);
+        game.selectPosition(2);
+        currentPlayer = game.getCurrentPlayer().getName();
+        assertThat(currentPlayer, is("Pietje"));
 
-
-
+    }
 
     private Map<Integer, String> createListOfCards() {
         Map<Integer, String> listOfCards = new HashMap<>();

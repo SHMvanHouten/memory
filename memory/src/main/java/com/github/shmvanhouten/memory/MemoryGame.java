@@ -7,26 +7,25 @@ import java.util.TreeMap;
 
 public class MemoryGame {
     private Map<Integer, Position> positions = new TreeMap<>();
-    private Map<Integer, Integer> shuffledPositions = new HashMap<>();
     private List<Player> players;
     private boolean firstPick = true;
     private Position firstPickedPosition;
     private Integer playerTurn = 0;
 
     public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shuffleMachine, List<Player> playerList){
-        players = playerList;
-        shuffledPositions = shuffleMachine.shuffle(amountOfCards * 2, true);
-        fillPositions(amountOfCards, imageLocations);
+        players = shuffleMachine.shuffle(playerList, true);
+        Map<Integer, Integer>shuffledPositions = shuffleMachine.shuffle(amountOfCards * 2, true);
+        fillPositions(amountOfCards, imageLocations, shuffledPositions);
     }
 
 
-    private void fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations){
+    private void fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations, Map<Integer, Integer> shuffledPositions){
         for (int i = 0; i < amountOfCardFaces; i++) {
-            makePositionWithCard(imageLocations, i, amountOfCardFaces);
+            makePositionWithCard(imageLocations, i, amountOfCardFaces, shuffledPositions);
         }
     }
 
-    private void makePositionWithCard(Map<Integer, String> imageLocations, int i, int amountOfCardFaces) {
+    private void makePositionWithCard(Map<Integer, String> imageLocations, int i, int amountOfCardFaces, Map<Integer, Integer> shuffledPositions) {
         String image = imageLocations.get(i);
         Position position = new Position();
         position.assignCard(image);
