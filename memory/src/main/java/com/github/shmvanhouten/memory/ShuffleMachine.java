@@ -11,7 +11,6 @@ public class ShuffleMachine {
             for (int i = 0; i < numberToShuffle; i++) {
                 shuffledMap.put(i, i);
             }
-            shuffledMap.put(3, 18);
         }
 
         return shuffledMap;
