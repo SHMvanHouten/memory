@@ -6,12 +6,15 @@ import java.util.TreeMap;
 
 public class MemoryGame {
     private Map<Integer, Position> positions = new TreeMap<>();
+    private List<Player> players;
     private ShuffleMachine shuffleMachine;
     private boolean firstPick = true;
     private Position firstPickedPosition;
+    private Integer playerTurn = 0;
 
-    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shufMachine){
+    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shufMachine, List<Player> playerList){
         shuffleMachine = shufMachine;
+        players = playerList;
         fillPositions(amountOfCards, imageLocations);
     }
 
@@ -24,8 +27,10 @@ public class MemoryGame {
     private void makePositionWithCard(Map<Integer, String> imageLocations, int i, int amountOfCardFaces) {
         Position position = new Position();
         position.assignCard(imageLocations.get(i));
+        Position copiedPosition = new Position();
+        copiedPosition.assignCard(imageLocations.get(i));
         positions.put(i, position);
-        positions.put(i+amountOfCardFaces, position);
+        positions.put(i+amountOfCardFaces, copiedPosition);
     }
 
 
@@ -67,14 +72,22 @@ public class MemoryGame {
     }
 
     private void handleSituationIfCardsAreDifferent(Position secondPickedPosition) {
-        System.out.println("Try again!");
+        System.out.println("Wrong! Opponents turn!");
 
         firstPickedPosition.getCard().turn();
         secondPickedPosition.getCard().turn();
 
-        //todo: switch players.
+        switchPlayerTurn();
 
-        firstPick = false;
+        firstPick = true;
+    }
+
+    private void switchPlayerTurn() {
+        if(playerTurn == players.size()){
+            playerTurn = 0;
+        }else{
+            playerTurn++;
+        }
     }
 
     private void handleSituationIfCardsAreEqual(Position secondPickedPosition) {
@@ -83,8 +96,12 @@ public class MemoryGame {
         firstPickedPosition.setUnoccupied();
         secondPickedPosition.setUnoccupied();
 
-        //todo: give point to player
+        getCurrentPlayer().scorePoint();
 
-        firstPick = false;
+        firstPick = true;
+    }
+
+    public Player getCurrentPlayer() {
+        return players.get(playerTurn);
     }
 }

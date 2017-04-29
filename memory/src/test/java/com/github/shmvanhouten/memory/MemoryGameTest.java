@@ -54,6 +54,29 @@ public class MemoryGameTest {
         assertThat(game.isPositionOccupied(0), is(false));
     }
 
+    @Test
+    public void itShouldSayWhoseTurnItIS() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        assertThat(game.getCurrentPlayer().getName(), is("Sjoerd"));
+
+        game.selectPosition(0);
+        game.selectPosition(1);
+        assertThat(game.getCurrentPlayer().getName(),is("Pietje"));
+        game.selectPosition(0);
+        game.selectPosition(0);
+        assertThat(game.getCurrentPlayer().getName(), is("Pietje"));
+    }
+
+    @Test
+    public void itShouldGiveCurrentPlayerAPoint() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        assertThat(game.getCurrentPlayer().getScore(), is(0));
+        game.selectPosition(0);
+        game.selectPosition(16);
+        assertThat(game.getCurrentPlayer().getName(), is("Sjoerd"));
+        assertThat(game.getCurrentPlayer().getScore(), is(1));
+
+    }
 
 
 
@@ -73,6 +96,11 @@ public class MemoryGameTest {
     private MemoryGame makeMemoryGame() {
         Map<Integer, String> listOfCards = createListOfCards();
         ShuffleMachine shuffleMachine = new ShuffleMachine();
-        return new MemoryGame(16, listOfCards, shuffleMachine);
+        List<Player> players = new ArrayList<>();
+        Player player1 = new Player("Sjoerd");
+        Player player2 = new Player("Pietje");
+        players.add(player1);
+        players.add(player2);
+        return new MemoryGame(16, listOfCards, shuffleMachine, players);
     }
 }
