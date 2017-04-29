@@ -78,7 +78,14 @@ public class MemoryGameTest {
 
     }
 
-
+    @Test
+    public void itShouldShuffleTheCards() throws Exception {
+        MemoryGame game = makeMemoryGame();
+        game.selectPosition(18);
+        game.selectPosition(19);
+        assertThat(game.getCurrentPlayer().getName(), is("Sjoerd"));
+        assertThat(game.getCurrentPlayer().getScore(), is(1));
+    }
 
 
 

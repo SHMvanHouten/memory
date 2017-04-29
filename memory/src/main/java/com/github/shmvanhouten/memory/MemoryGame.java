@@ -1,22 +1,24 @@
 package com.github.shmvanhouten.memory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class MemoryGame {
     private Map<Integer, Position> positions = new TreeMap<>();
+    private Map<Integer, Integer> shuffledPositions = new HashMap<>();
     private List<Player> players;
-    private ShuffleMachine shuffleMachine;
     private boolean firstPick = true;
     private Position firstPickedPosition;
     private Integer playerTurn = 0;
 
-    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shufMachine, List<Player> playerList){
-        shuffleMachine = shufMachine;
+    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shuffleMachine, List<Player> playerList){
         players = playerList;
+        shuffledPositions = shuffleMachine.shuffle(amountOfCards * 2, true);
         fillPositions(amountOfCards, imageLocations);
     }
+
 
     private void fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations){
         for (int i = 0; i < amountOfCardFaces; i++) {
@@ -25,12 +27,13 @@ public class MemoryGame {
     }
 
     private void makePositionWithCard(Map<Integer, String> imageLocations, int i, int amountOfCardFaces) {
+        String image = imageLocations.get(i);
         Position position = new Position();
-        position.assignCard(imageLocations.get(i));
+        position.assignCard(image);
         Position copiedPosition = new Position();
-        copiedPosition.assignCard(imageLocations.get(i));
-        positions.put(i, position);
-        positions.put(i+amountOfCardFaces, copiedPosition);
+        copiedPosition.assignCard(image);
+        positions.put(shuffledPositions.get(i), position);
+        positions.put(shuffledPositions.get(i+amountOfCardFaces), copiedPosition);
     }
 
 
