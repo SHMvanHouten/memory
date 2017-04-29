@@ -12,9 +12,14 @@ public class MemoryGame {
     private Integer playerTurn = 0;
 
     public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shuffleMachine, List<Player> playerList){
-        players = shuffleMachine.shuffle(playerList, true);
+        players = shuffleMachine.shuffle(playerList);
         Map<Integer, Position>unShuffledPositions = fillPositions(amountOfCards, imageLocations);
-        positions = shuffleMachine.shuffle(unShuffledPositions, true);
+        positions = shuffleMachine.shuffle(unShuffledPositions);
+    }
+
+    public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, List<Player>playerList){
+        players = playerList;
+        positions = fillPositions(amountOfCards, imageLocations);
     }
 
 
@@ -47,6 +52,7 @@ public class MemoryGame {
     public void selectPosition(int i) {
         Position position = positions.get(i);
         MemoryCard card = position.getCard();
+
         if (!position.isOccupied()){
             System.out.println("no Card in this position");
         }else if(firstPick){

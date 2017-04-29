@@ -111,12 +111,13 @@ public class MemoryGameTest {
 
     private MemoryGame makeMemoryGame() {
         Map<Integer, String> listOfCards = createListOfCards();
-        ShuffleMachine shuffleMachine = new ShuffleMachine();
         List<Player> players = new ArrayList<>();
         Player player1 = new Player("Sjoerd");
         Player player2 = new Player("Pietje");
         players.add(player1);
         players.add(player2);
-        return new MemoryGame(16, listOfCards, shuffleMachine, players);
+//        ShuffleMachine shuffleMachine = new ShuffleMachine();
+//        return new MemoryGame(16, listOfCards, shuffleMachine, players);
+        return new MemoryGame(16, listOfCards, players);
     }
 }

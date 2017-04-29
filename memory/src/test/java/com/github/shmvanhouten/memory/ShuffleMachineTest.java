@@ -2,7 +2,9 @@ package com.github.shmvanhouten.memory;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
@@ -13,10 +15,10 @@ public class ShuffleMachineTest {
     @Test
     public void itShouldShuffle() throws Exception {
         ShuffleMachine shuffleMachine = new ShuffleMachine();
-        Map<Integer,Integer> testMap = new HashMap<>();
-        testMap.put(0,0);
-        testMap.put(1,1);
-        assertThat(shuffleMachine.shuffle(2, true).get(0), is(0));
-        assertThat(shuffleMachine.shuffle(2, true).get(1), is(1));
+        List<Player> testMap = new ArrayList<>();
+        testMap.add(new Player("Sjoerd"));
+        testMap.add(new Player("Pietje"));
+        assertThat(shuffleMachine.shuffle(testMap).get(0).getName(), is("Sjoerd"));
+        assertThat(shuffleMachine.shuffle(testMap).get(1).getName(), is("Pietje"));
     }
 }
