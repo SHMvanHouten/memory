@@ -1,12 +1,11 @@
 package com.github.shmvanhouten.memory;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class MemoryGame {
-    private Map<Integer, Position> positions = new TreeMap<>();
+    private Map<Integer, Position> positions;
     private List<Player> players;
     private boolean firstPick = true;
     private Position firstPickedPosition;
@@ -14,26 +13,27 @@ public class MemoryGame {
 
     public MemoryGame(int amountOfCards, Map<Integer, String> imageLocations, ShuffleMachine shuffleMachine, List<Player> playerList){
         players = shuffleMachine.shuffle(playerList, true);
-        Map<Integer, Integer>shuffledPositions = shuffleMachine.shuffle(amountOfCards * 2, true);
-        fillPositions(amountOfCards, imageLocations, shuffledPositions);
+        Map<Integer, Position>unShuffledPositions = fillPositions(amountOfCards, imageLocations);
+        positions = shuffleMachine.shuffle(unShuffledPositions, true);
     }
 
 
-    private void fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations, Map<Integer, Integer> shuffledPositions){
+    private Map<Integer, Position> fillPositions(int amountOfCardFaces, Map<Integer, String> imageLocations){
+        Map<Integer, Position> unShuffledPositions = new TreeMap<>();
         for (int i = 0; i < amountOfCardFaces; i++) {
-            makePositionWithCard(imageLocations, i, amountOfCardFaces, shuffledPositions);
+            String image = imageLocations.get(i);
+
+            Position position = new Position();
+            position.assignCard(image);
+            unShuffledPositions.put(i, position);
+
+            Position copiedPosition = new Position();
+            copiedPosition.assignCard(image);
+            unShuffledPositions.put(i+amountOfCardFaces, copiedPosition);
         }
+        return unShuffledPositions;
     }
 
-    private void makePositionWithCard(Map<Integer, String> imageLocations, int i, int amountOfCardFaces, Map<Integer, Integer> shuffledPositions) {
-        String image = imageLocations.get(i);
-        Position position = new Position();
-        position.assignCard(image);
-        Position copiedPosition = new Position();
-        copiedPosition.assignCard(image);
-        positions.put(shuffledPositions.get(i), position);
-        positions.put(shuffledPositions.get(i+amountOfCardFaces), copiedPosition);
-    }
 
 
     public boolean isPositionOccupied(int i) {
