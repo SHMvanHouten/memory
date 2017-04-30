@@ -2,7 +2,6 @@ package com.github.shmvanhouten.memory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
@@ -87,11 +86,13 @@ public class MemoryGame {
             card.turn();
             firstPick = false;
             firstPickedPosition = position;
+            System.out.println(getCurrentPlayer().getName() + ", please pick another card.");
         }else if(card.isTurned()){
             System.out.println("Card has already been turned");
         }else{
             card.turn();
             compareCards(position);
+            System.out.println(getCurrentPlayer().getName() + ", pick your first card!");
         }
 
     }
@@ -134,6 +135,7 @@ public class MemoryGame {
         secondPickedPosition.setUnoccupied();
 
         getCurrentPlayer().scorePoint();
+        System.out.println(getCurrentPlayer().getName() + " has " +getCurrentPlayer().getScore() + " points");
 
         firstPick = true;
     }
